@@ -22,7 +22,7 @@ export const userApi = createApi({
       query: () => ({
         url: "/logout",
         method: "GET",
-        credentials: "include", // cookie də getsin!
+        credentials: "include", 
       }),
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
@@ -36,22 +36,24 @@ export const userApi = createApi({
     getUserProfile: builder.query({
       query: () => "/me",
     }),
-    resetPassword: builder.mutation({
-      query: ({ token, password, confirmPassword }) => ({
-        url: `/password/reset/${token}`,
-        method: "PUT",
-        body: { password, confirmPassword },
-      }),
-    }),
-    // Düzəldilmiş forgotPassword mutation
-    // Artıq `body: data` olaraq birbaşa obyekt göndəririk
     forgotPassword: builder.mutation({
-      query: (data) => ({ 
-        url: "/password/forget", // "forgot" --> "forget" ilə dəyişdirildi
+      query: (data) => ({
+        url: "/password/forget",
         method: "POST",
         body: data,
       }),
     }),
+    
+    // YENİ ƏLAVƏ OLUNMUŞ HİSSƏ
+    resetPassword: builder.mutation({
+      query: ({ token, data }) => ({
+        url: `/password/reset/${token}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    // YENİ ƏLAVƏ OLUNMUŞ HİSSƏ SONU
+
   }),
 });
 
@@ -60,6 +62,9 @@ export const {
   useRegisterMutation,
   useLogoutMutation,
   useGetUserProfileQuery,
+  useForgotPasswordMutation,
+  
+  // YENİ ƏLAVƏ OLUNMUŞ HOOK
   useResetPasswordMutation,
-  useForgotPasswordMutation, // Yeni hook'u export edirik
+  // YENİ ƏLAVƏ OLUNMUŞ HOOK SONU
 } = userApi;

@@ -160,7 +160,7 @@ const Navbar = () => {
               )}
             </>
           ) : (
-            <Link to="/login" className="text-white  bg-blue-500 px-3 py-2 rounded">
+            <Link to="/login" className="text-white  bg-green-500 px-3 py-2 rounded">
               Login
             </Link>
           )}
