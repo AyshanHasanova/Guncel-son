@@ -13,21 +13,21 @@ export const productApi = createApi({
       }),
       invalidatesTags: ['Products']
     }),
-    // updateProduct: builder.mutation({
-    //   query: ({ id, formData }) => ({
-    //     url: `/admin/product/${id}`,
-    //     method: 'PUT',
-    //     body: formData,
-    //   }),
-    //   invalidatesTags: ['Products']
-    // }),
-    // deleteProduct: builder.mutation({
-    //   query: id => ({
-    //     url: `/admin/product/${id}`,
-    //     method: 'DELETE',
-    //   }),
-    //   invalidatesTags: ['Products']
-    // }),
+    updateProduct: builder.mutation({
+      query: ({ id, formData }) => ({
+        url: `/admin/product/${id}`,
+        method: 'PUT',
+        body: formData,
+      }),
+      invalidatesTags: ['Products']
+    }),
+    deleteProduct: builder.mutation({
+      query: id => ({
+        url: `/admin/product/${id}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Products']
+    }),
     getProducts: builder.query({
       query: () => '/mehsullar',
       providesTags: ['Products']

@@ -66,12 +66,11 @@ function App() {
    
     } />
 
-    <Route path='/admin/dashboard' element = {
-      <PrivateRoute allowedRoles={["admin"]}>
-       <AdminDashboard/>
-      </PrivateRoute>
-      
-    }/>
+<Route path='/admin/dashboard/*' element={
+  <PrivateRoute allowedRoles={["admin"]}>
+    <AdminDashboard />
+  </PrivateRoute>
+} />
 
 <Route path='/admin/product/new' element = {
       <PrivateRoute allowedRoles={["admin"]}>
