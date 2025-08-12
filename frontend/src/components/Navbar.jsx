@@ -1,46 +1,43 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { useGetUserProfileQuery, useLogoutMutation } from '../redux/api/userApi'
+import React, { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useGetUserProfileQuery, useLogoutMutation } from '../redux/api/userApi';
+import { useSelector } from 'react-redux';
 
 const Navbar = () => {
-  const navigate = useNavigate()
-  const { data, isLoading, isError } = useGetUserProfileQuery()
-  const [logout] = useLogoutMutation()
-  const [dropdownAciqdirMi, dropdownunStatusunuDeyish] = useState(false)
+  const navigate = useNavigate();
+  const { data, isLoading } = useGetUserProfileQuery();
+  const [logout] = useLogoutMutation();
+  const [dropdownAciqdirMi, dropdownunStatusunuDeyish] = useState(false);
+  const dropdownRef = useRef(null);
+  const user = data?.user;
 
-  const dropdownRef = useRef(null)
+  const totalQuantity = useSelector(state => state.cart.totalQuantity); // ✅ cart sayını alırıq
 
   const dropdownuAcBagla = () => {
-    dropdownunStatusunuDeyish(!dropdownAciqdirMi)
-  }
+    dropdownunStatusunuDeyish(!dropdownAciqdirMi);
+  };
 
   const cixishEt = async () => {
     try {
-      await logout().unwrap()
-      navigate('/login')
+      await logout().unwrap();
+      navigate('/login');
     } catch (err) {
-      console.error('Logout error', err)
+      console.error('Logout error', err);
     }
-  }
+  };
 
-  const user = data?.user
-
-  
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target)
-      ) {
-        dropdownunStatusunuDeyish(false)
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        dropdownunStatusunuDeyish(false);
       }
-    }
+    };
 
-    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [])
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <nav className="bg-white border-gray-200 dark:bg-gray-900 py-5 relative">
@@ -56,68 +53,76 @@ const Navbar = () => {
           </span>
         </Link>
 
-     <div className="items-center justify-between hidden w-full absolute top-[70px] left-[0] md:static md:flex md:w-auto" id="navbar-user">
-
-    {
-      user? (
-        <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-        <li>
-          <Link
-            to="/"
-            className="block py-2 px-3 text-white bg-green-700 rounded-sm md:bg-transparent md:text-green-700 md:p-0 md:dark:text-green-500"
-          >
-            Home
-          </Link>
-        </li>
-        <li>
-          <Link
-            to="/about"
-            className="block py-2 px-3 text-gray-900 hover:bg-gray-100 md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500"
-          >
-            About
-          </Link>
-        </li>
-        <li>
-          <Link
-            to="/store"
-            className="block py-2 px-3 text-gray-900 hover:bg-gray-100 md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500"
-          >
-            Store
-          </Link>
-        </li>
-        <li>
-          <Link
-            to="/profile"
-            className="block py-2 px-3 text-gray-900 hover:bg-gray-100 md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500"
-          >
-            Profile
-          </Link>
-        </li>
-        <li>
-          <Link
-            to="/contact"
-            className="block py-2 px-3 text-gray-900 hover:bg-gray-100 md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500"
-          >
-            Contact
-          </Link>
-        </li>
-      </ul>
-      
-      ) : null
-    }
-         
-
-
+        <div
+          className="items-center justify-between hidden w-full absolute top-[70px] left-[0] md:static md:flex md:w-auto"
+          id="navbar-user"
+        >
+          {user ? (
+            <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+              <li>
+                <Link
+                  to="/"
+                  className="block py-2 px-3 text-white bg-green-700 rounded-sm md:bg-transparent md:text-green-700 md:p-0 md:dark:text-green-500"
+                >
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/about"
+                  className="block py-2 px-3 text-gray-900 hover:bg-gray-100 md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500"
+                >
+                  About
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/store"
+                  className="block py-2 px-3 text-gray-900 hover:bg-gray-100 md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500"
+                >
+                  Store
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/profile"
+                  className="block py-2 px-3 text-gray-900 hover:bg-gray-100 md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500"
+                >
+                  Profile
+                </Link>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  className="block py-2 px-3 text-gray-900 hover:bg-gray-100 md:hover:text-green-700 md:p-0 dark:text-white md:dark:hover:text-green-500"
+                >
+                  Contact
+                </a>
+              </li>
+            </ul>
+          ) : null}
         </div>
- 
-       
 
-        <div className="flex items-center space-x-3 md:space-x-0" ref={dropdownRef}>
+        <div className="flex items-center space-x-3 md:space-x-4" ref={dropdownRef}>
+          {/* 🛒 Sebet ikonu */}
+          <Link to="/cart" className="relative text-gray-700 dark:text-white">
+            <i className="fa fa-shopping-cart text-xl"></i>
+            {totalQuantity > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                {totalQuantity}
+              </span>
+            )}
+          </Link>
+
           {isLoading ? (
             <div className="w-8 h-8 rounded-full bg-gray-300 animate-pulse" />
           ) : user ? (
             <>
-              <button onClick={dropdownuAcBagla} type="button" className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600">
+              <button
+                onClick={dropdownuAcBagla}
+                type="button"
+                className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+              >
                 <span className="sr-only">Open user menu</span>
                 <img
                   className="w-8 h-8 rounded-full"
@@ -135,23 +140,35 @@ const Navbar = () => {
                   <ul className="py-2">
                     {user.role === 'admin' && (
                       <li>
-                        <Link to="/admin/dashboard" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                        <Link
+                          to="/admin/dashboard"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                        >
                           Dashboard
                         </Link>
                       </li>
                     )}
                     <li>
-                      <Link to="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                      <Link
+                        to="#"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                      >
                         Settings
                       </Link>
                     </li>
                     <li>
-                      <Link to="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                      <Link
+                        to="#"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                      >
                         Earnings
                       </Link>
                     </li>
                     <li>
-                      <button onClick={cixishEt} className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                      <button
+                        onClick={cixishEt}
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                      >
                         Sign out
                       </button>
                     </li>
@@ -160,22 +177,39 @@ const Navbar = () => {
               )}
             </>
           ) : (
-            <Link to="/login" className="text-white  bg-green-500 px-3 py-2 rounded">
+            <Link to="/login" className="text-white bg-blue-500 px-3 py-2 rounded">
               Login
             </Link>
           )}
 
-
-    <button data-collapse-toggle="navbar-user" type="button" className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-user" aria-expanded="false">
-      <span className="sr-only">Open main menu</span>
-      <svg className="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
-      </svg>
-  </button>
+          <button
+            data-collapse-toggle="navbar-user"
+            type="button"
+            className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+            aria-controls="navbar-user"
+            aria-expanded="false"
+          >
+            <span className="sr-only">Open main menu</span>
+            <svg
+              className="w-5 h-5"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 17 14"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M1 1h15M1 7h15M1 13h15"
+              />
+            </svg>
+          </button>
         </div>
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

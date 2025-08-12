@@ -23,6 +23,7 @@ import Footer from './components/Footer'
 import Store from './pages/Store'
 import Profile from "./components/ui/Profile";
 import Contact from './pages/Contact'
+import Cart from './pages/Cart'
 
 
 function App() {
@@ -53,6 +54,7 @@ function App() {
     }/>
   <Route path='/forgot-password' element={<ForgetPassword/>}/>
   <Route path="/password/reset/:token" element={<ResetPassword />} />
+  <Route path="/cart" element={<Cart />} />
   <Route path='/register' element={
     <GuestRoute>
          <Register/>

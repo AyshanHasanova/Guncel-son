@@ -2,17 +2,28 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useGetProductsQuery } from '../redux/api/productsApi';
 import toast from 'react-hot-toast';
-
-// Swiper.js modulları üçün importlar
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Autoplay } from 'swiper/modules';
-
-// Swiper.js stil fayllarını daxil edin
 import 'swiper/css';
 import 'swiper/css/pagination';
 
-// Sizin Mehsul komponentiniz
+// Redux importları
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../redux/features/cart/cartSlice';
+
 const Mehsul = ({ mehsulAdiProps, mehsulQiymetiProps, mehsulShekliProps, mehsulunId }) => {
+  const dispatch = useDispatch();
+
+  const mehsuluSebeteElaveEt = () => {
+    dispatch(addToCart({
+      id: mehsulunId,
+      name: mehsulAdiProps,
+      price: mehsulQiymetiProps,
+      image: mehsulShekliProps.url,
+      quantity: 1,
+    }));
+  };
+
   return (
     <div className="w-full h-auto flex flex-col items-center justify-between bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 dark:bg-gray-800 dark:border-gray-700 overflow-hidden">
       <Link to={`/mehsullar/${mehsulunId}`} className="w-full">
@@ -28,28 +39,28 @@ const Mehsul = ({ mehsulAdiProps, mehsulQiymetiProps, mehsulShekliProps, mehsulu
           <span className="text-sm font-bold text-gray-500 dark:text-gray-400">
             {mehsulQiymetiProps}&#8380;
           </span>
-          <a
-            href="#"
+          {/* A tag-i yerine button istifade edirik */}
+          <button
+            onClick={mehsuluSebeteElaveEt}
             className="text-white bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 mt-2 transition-all duration-300 dark:text-white dark:border-green-500 dark:hover:bg-green-600 dark:hover:text-white dark:focus:ring-green-800"
           >
             Add to cart
-          </a>
+          </button>
         </div>
       </div>
     </div>
   );
 };
 
-// Sizin Mehsullar komponentiniz (artıq slayderdir)
 const MehsullarSlider = () => {
   const { data, isLoading, error, isError } = useGetProductsQuery();
   
   useEffect(() => {
     if (isError) {
       console.log(error);
-      toast.error(error?.data || 'Serverde xeta var');
+      toast.error(error?.data?.message || 'Serverde xeta var');
     }
-  }, [isError]);
+  }, [isError, error]);
 
   return (
     <div className="container mx-auto py-10 px-4 relative">
